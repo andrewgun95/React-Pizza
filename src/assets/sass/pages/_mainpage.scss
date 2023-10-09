@@ -1,0 +1,47 @@
+.menu {
+
+    h2 {
+        margin: 2.5rem 0;
+        padding: 1rem 0;
+
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        letter-spacing: .5rem;
+
+        position: relative;
+    }
+
+    h2::before {
+        content: "";
+        display: block;
+        height: 2px;
+        width: 18rem;
+        background-color: black;
+        position: absolute;
+        top: 0;
+        left: calc(50% - 9rem);
+    }
+
+    h2::after {
+        content: "";
+        display: block;
+        height: 2px;
+        width: 18rem;
+        background-color: black;
+        position: absolute;
+        bottom: 0;
+        left: calc(50% - 9rem);
+    }
+
+    >p {
+        font-size: 2rem;
+        line-height: 1.6;
+        text-align: center;
+        width: 60%;
+        margin: 0 auto;
+        padding-bottom: 5rem;
+    }
+
+}
