@@ -60,55 +60,117 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = [];
+
   // Order doesn't matter when passing props in the component
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <p>
-        Authentication Italian cuisine. 6 creative dishes to choose from. All
-        from our stone oven, all organic, all delicious.
-      </p>
-      <Pizza
-        name="Pizza Spinaci"
-        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-        photoName="pizzas/spinaci.jpg"
-        price={10}
-      />
-      <Pizza
-        name="Pizza Funghi"
-        ingredients="Tomato, mushrooms"
-        price={12}
-        photoName="pizzas/funghi.jpg"
-      />
+      {/* SHORT CIRCUITING CONDITIONAL RENDERING */}
+      {/* pizzas.length > 0 && (rendering elements...) Or used pizzas ?? (rendering elements...)*/}
+
+      {pizzas.length > 0 ? (
+        // React Fragment
+        // Or short version <> rendering elements </>
+        <React.Fragment key="test123">
+          <p>
+            Authentication Italian cuisine. 6 creative dishes to choose from.
+            All from our stone oven, all organic, all delicious.
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((e) => (
+              <Pizza pizzaObject={e} key={e.name} />
+            ))}
+            {/* {[
+          <Pizza pizzaObject={pizzaData[0]} />,
+          <Pizza pizzaObject={pizzaData[1]} />,
+          ]} */}
+            {/* <Pizza
+            name="Pizza Spinaci"
+            ingredients="Tomato, mozarella, spinach, and ricotta cheese"
+            photoName="pizzas/spinaci.jpg"
+            price={10}
+          />
+          <Pizza
+            name="Pizza Funghi"
+            ingredients="Tomato, mushrooms"
+            price={12}
+            photoName="pizzas/funghi.jpg"
+          /> */}
+          </ul>
+        </React.Fragment>
+      ) : (
+        <p>We're still working on our menu. Please come back later !</p>
+      )}
     </main>
   );
 }
 
-// Props is an Object
-function Pizza(props) {
+// Props is an Object, try using "Destructuring"
+function Pizza({ pizzaObject }) {
+  /* CONDITIONAL WITH MULTIPLE RETURNS */
+  // if (condition) return (rendering elements...)
+  // return (rendering elements...)
+
+  // if (pizzaObject.soldOut) return null; // Not show if 'sold out'
+
   return (
-    <div className="pizza">
-      <img src={props.photoName} alt="This is spinaci" />
+    <li className={`pizza ${pizzaObject.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObject.photoName} alt="This is spinaci" />
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price + 3}</span>
+        <h3>{pizzaObject.name}</h3>
+        <p>{pizzaObject.ingredients}</p>
+
+        {/* 1. Both element and content is evaluated  */}
+        {/* {pizzaObject.soldOut ? (
+          <span>SOLD OUT</span>
+        ) : (
+          <span>{pizzaObject.price}</span>
+        )} */}
+
+        {/* 2. Only content is evaluated */}
+        <span>{pizzaObject.soldOut ? "SOLD OUT" : pizzaObject.price}</span>
       </div>
-    </div>
+    </li>
   );
 }
 
-function Footer() {
+function Footer(props) {
+  console.log(props);
   //   return React.createElement("footer", null, "We're currently open!");
   const hour = new Date().getHours();
-  const [open, close] = [18, 20];
-  const isOpen = hour >= open && hour <= close;
-  console.log(isOpen);
+  const [openHour, closeHour] = [0, 24];
+  const isOpen = hour >= openHour && hour <= closeHour;
 
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()}. We're currently open!
+      {/* CONDITIONAL WITH TERNARY OPERATOR */}
+      {/* condition ? true : false (alternate options) */}
+      {/* Conditional statement doesn't work because not producing a value */}
+      {isOpen ? (
+        <Order openHour={openHour} closeHour={closeHour} />
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 until {closeHour}:00
+        </p>
+      )}
+      {/* {false} {true} // will not render ! */}
+      {/* {new Date().toLocaleTimeString()}. We're currently open! */}
     </footer>
+  );
+}
+
+// Props is an Object, try using "Destructuring"
+function Order({ openHour, closeHour }) {
+  return (
+    <div className="order">
+      <p>
+        We're open from {openHour}:00 until {closeHour}:00. Come visit us to
+        order online.
+      </p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
